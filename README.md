@@ -1,39 +1,36 @@
-# Setup pipeline using CircleCI, update GitHub Kubernetes manifest repo and push image on Docker Hub
+# Deploying Dockerized App on AWS EKS Cluster using ArgoCD and GitOps methodology with CircleCI
 
-✨This repository contains the code of the **Kubernetes manifest files** as part of Project 4 of our **10WeeksofCloudOps** series! In this comprehensive hands-on project, we dive deep into the world of **GitOps and ArgoCD**, demonstrating how to implement these essential DevOps practices step by step by **dockerizing** the application and provisioning the infrastructure using **Terraform**.
-
-## 💪Complete Hands-on video tutorial for this project. Click here 👇
-[![GitOps , ArgoCD, Terraform](https://i9.ytimg.com/vi_webp/LgBnbmfsIdA/mqdefault.webp?v=65001550&sqp=CMyFgqgG&rs=AOn4CLB-7wLlJjUqu2q7dOdDMdQRyQ46TA)](https://youtu.be/LgBnbmfsIdA "GitOps|ArgoCD|Terraform")
+This repository contains the code of the React application called ToDo-App. I've created this to Deploy it on the Kubernetes cluster by GitOps workflow.
 
 ## Architecture
-
 ![Architecture Diagram](https://cdn-images-1.medium.com/max/800/1*T5IRoSoiqT8qnYLUprsRUQ.png)
 
+## List of AWS services
+- Amazon EKS 
+- Amazon VPC
+- Amazon  IAM
+- Amazon EC2
+- Amazon Autoscaling 
+- Amazon S3
+- DynamoDB 
 
-## Synopsis
-- When CircleCI notices any changes in the application code, it executes the jobs we have set up. There are a total of four jobs:
+## Tech stack
 
-### Test: 
-- This job tests the code. After the test job is completed, CircleCI proceeds to the next job. 
-- Note: I didn't add this job to save time. 
-
-### Build: 
-- In the build job, CircleCI pulls the base Docker images and packages our application code inside the image.
-
-### Push: 
-- The push job pushes the newly generated images to Docker Hub with a new tag.
-
-### Update Manifest: 
-- After completing the push job, the last job is executed, which updates the Kubernetes manifest repository with the new tag. This enables ArgoCD to detect the change and apply it to the cluster.
-
-Following this pipeline ensures that our application code is thoroughly tested, built into Docker images, and deployed with the updated manifest using the GitOps approach.
+- React Js
 
 **This project contains Three GitHub repositories**
 
-➡️ [App Code] (https://github.com/piyushsachdeva/AppCode)
+1. https://github.com/adamlevi87/project1-AppCode
 
-➡️ [Terraform code] (https://github.com/piyushsachdeva/10weeksofcloudops-week4-tf)
 
-➡️ [Manifest Repo] (https://github.com/piyushsachdeva/kube_manifest)
+This repository will be used in the CI process where we will be using CircleCI, on any change on this repo, to:
+build our dockerized application
+push it to the selected docker service (docker hub)
+update another github repository with the manifests (deployment & service yamls) to be used by ArgoCD to deploy/update the application on a kubernetes service (EKS) running on AWS.
 
-🙏 Thank you so much for reading.
+Variables that must be set on CircleCI's project (as mentioned in the config file project1-AppCode/.circleci/config.yml):
+1. $DOCKER_USERNAME
+2. $DOCKER_PASSWORD
+3. $GITHUB_PERSONAL_TOKEN (created from your github account - developer settings. You must add permissions to this token too)
+
+
